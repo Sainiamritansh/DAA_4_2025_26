@@ -1,0 +1,31 @@
+class Solution {
+public:
+    int find(int x, vector<int>& parent) {
+        if (parent[x] == x) return x;
+        return find(parent[x], parent);
+    }
+
+    int spanningTree(int V, vector<vector<int>>& edges) {
+        sort(edges.begin(), edges.end(), [](vector<int>& a, vector<int>& b) {
+            return a[2] < b[2];
+        });
+
+        vector<int> parent(V);
+        for (int i = 0; i < V; i++)
+            parent[i] = i;
+
+        int sum = 0;
+
+        for (auto e : edges) {
+            int u = find(e[0], parent);
+            int v = find(e[1], parent);
+
+            if (u != v) {
+                sum += e[2];
+                parent[u] = v;
+            }
+        }
+
+        return sum;
+    }
+};
